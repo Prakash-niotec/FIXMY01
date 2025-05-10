@@ -1,5 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useLocalSearchParams } from "expo-router";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const CARD_MAX_WIDTH = 500;
 
 export default function DetailsScreen() {
   const params = useLocalSearchParams();
@@ -16,9 +19,6 @@ export default function DetailsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header Separator Only */}
-
-      {/* Main Content */}
       <View style={styles.content}>
         <View style={styles.card}>
           <Text style={styles.provider}>{name}</Text>
@@ -48,32 +48,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 16,
-  },
-  header: {
-    marginBottom: 16,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#E0E0E0",
-    marginTop: 8,
+    padding: SCREEN_WIDTH > 500 ? 32 : 16,
+    alignItems: "center",
   },
   content: {
     flex: 1,
-    paddingVertical: 16,
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: SCREEN_WIDTH > 500 ? 32 : 16,
   },
   card: {
     backgroundColor: "#E3F0FF",
     borderRadius: 15,
-    padding: 18,
+    padding: SCREEN_WIDTH > 500 ? 32 : 18,
     marginTop: 4,
     shadowColor: "#000",
     shadowOpacity: 0.04,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
+    width: SCREEN_WIDTH > CARD_MAX_WIDTH ? CARD_MAX_WIDTH : "100%",
+    maxWidth: CARD_MAX_WIDTH,
   },
   provider: {
-    fontSize: 18,
+    fontSize: SCREEN_WIDTH > 400 ? 20 : 18,
     fontWeight: "600", // Outfit SemiBold
     fontFamily: "Outfit",
     color: "#000",
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
   },
   serviceName: {
-    fontSize: 16,
+    fontSize: SCREEN_WIDTH > 400 ? 18 : 16,
     fontWeight: "500", // Outfit Medium
     fontFamily: "Outfit",
     color: "#000",
@@ -98,7 +95,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2,
   },
   detailRow: {
-    fontSize: 14,
+    fontSize: SCREEN_WIDTH > 400 ? 16 : 14,
     fontWeight: "400", // Outfit Regular
     fontFamily: "Outfit",
     color: "#666666",

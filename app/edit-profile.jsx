@@ -8,12 +8,17 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
+  Platform,
+  ActionSheetIOS,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
 
-const { width, height } = Dimensions.get("window");
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const PROFILE_SIZE = Math.max(90, Math.min(140, SCREEN_WIDTH * 0.28)); // Responsive profile size
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -54,36 +59,119 @@ export default function EditProfileScreen() {
     }
   };
 
-  const handleProfilePictureUpload = () => {
-    console.log("Profile picture upload clicked");
+  // Profile picture upload logic
+  const handleProfilePictureUpload = async () => {
+    const openCamera = async () => {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if (!result.canceled) setProfilePicture(result.assets[0].uri);
+    };
+
+    const openGallery = async () => {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if (!result.canceled) setProfilePicture(result.assets[0].uri);
+    };
+
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ["Cancel", "Take Photo", "Choose from Gallery"],
+          cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) openCamera();
+          else if (buttonIndex === 2) openGallery();
+        }
+      );
+    } else {
+      Alert.alert(
+        "Profile Picture",
+        "Choose an option",
+        [
+          { text: "Cancel", style: "cancel" },
+          { text: "Take Photo", onPress: openCamera },
+          { text: "Choose from Gallery", onPress: openGallery },
+        ],
+        { cancelable: true }
+      );
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         {/* Profile Picture */}
-        <View style={styles.profilePictureContainer}>
-          {profilePicture ? (
-            <Image
-              source={{ uri: profilePicture }}
-              style={styles.profilePicture}
-            />
-          ) : (
-            <Image
-              source={require("./assets/profile.jpg")}
-              style={styles.profilePicture}
-            />
-          )}
-          <TouchableOpacity
-            onPress={handleProfilePictureUpload}
-            style={styles.uploadButton}
+        <View style={styles.profilePictureWrapper}>
+          <View
+            style={[
+              styles.profilePictureContainer,
+              { width: PROFILE_SIZE, height: PROFILE_SIZE },
+            ]}
           >
-            <Text style={styles.uploadButtonText}>Upload Profile Picture</Text>
-          </TouchableOpacity>
+            {profilePicture ? (
+              <Image
+                source={{ uri: profilePicture }}
+                style={[
+                  styles.profilePicture,
+                  {
+                    width: PROFILE_SIZE,
+                    height: PROFILE_SIZE,
+                    borderRadius: PROFILE_SIZE / 2,
+                  },
+                ]}
+              />
+            ) : (
+              <Image
+                source={require("./assets/profile.jpg")}
+                style={[
+                  styles.profilePicture,
+                  {
+                    width: PROFILE_SIZE,
+                    height: PROFILE_SIZE,
+                    borderRadius: PROFILE_SIZE / 2,
+                  },
+                ]}
+              />
+            )}
+            {/* Mirrored Edit (✏️) Button */}
+            <TouchableOpacity
+              style={[
+                styles.editButton,
+                {
+                  right: -PROFILE_SIZE * 0.1,
+                  bottom: 0,
+                },
+              ]}
+              onPress={handleProfilePictureUpload}
+              activeOpacity={0.7}
+            >
+              <View style={styles.editCircle}>
+                <Text style={styles.editEmojiMirrored}>✏️</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Form Container */}
-        <View style={styles.formContainer}>
+        <View
+          style={[
+            styles.formContainer,
+            {
+              width: SCREEN_WIDTH > 500 ? 400 : "90%",
+              marginTop: -PROFILE_SIZE / 2.2, // Overlap the profile picture
+              paddingTop: PROFILE_SIZE / 2 + 16,
+            },
+          ]}
+        >
           {/* Title */}
           <Text style={styles.title}>Edit Profile</Text>
 
@@ -197,43 +285,60 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: "#fff",
+    alignItems: "center",
+    padding: 0,
+    paddingTop: 40,
+  },
+  profilePictureWrapper: {
+    width: "100%",
+    alignItems: "center",
+    zIndex: 2,
+    marginBottom: 0,
+    marginTop: 20,
   },
   profilePictureContainer: {
     alignItems: "center",
-    marginBottom: 16,
+    justifyContent: "center",
+    position: "relative",
+    zIndex: 3,
   },
   profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
     borderWidth: 2,
     borderColor: "#ccc",
+    backgroundColor: "#eee",
+    zIndex: 2,
   },
-  uploadButton: {
-    marginTop: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: "#007BFF",
-    borderRadius: 4,
+  editButton: {
+    position: "absolute",
+    zIndex: 4,
   },
-  uploadButtonText: {
+  editCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#111",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#fff",
+  },
+  editEmojiMirrored: {
+    fontSize: 20,
     color: "#fff",
-    fontSize: 14,
-    fontWeight: "800",
-    fontFamily: "Outfit",
+    transform: [{ scaleX: -1 }],
   },
   formContainer: {
     backgroundColor: "#513FF3",
     padding: 16,
-    borderRadius: 30, // Updated corner radius
+    borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginTop: 16,
+    alignSelf: "center",
+    zIndex: 1,
   },
   title: {
     fontSize: 24,
@@ -241,6 +346,7 @@ const styles = StyleSheet.create({
     fontFamily: "Outfit",
     color: "#FFFFFF",
     marginBottom: 16,
+    textAlign: "center",
   },
   label: {
     fontSize: 16,
@@ -288,7 +394,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     backgroundColor: "#007BFF",
     paddingVertical: 12,
-    borderRadius: 20, // Rounded corners
+    borderRadius: 20,
     alignItems: "center",
   },
   cancelButton: {
@@ -296,9 +402,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     backgroundColor: "#007BFF",
     paddingVertical: 12,
-    borderRadius: 20, // Rounded corners
+    borderRadius: 20,
     alignItems: "center",
-    color: "#FF3B30", // Red text inside the button
+    color: "#FF3B30",
   },
   buttonText: {
     color: "#FFFFFF",

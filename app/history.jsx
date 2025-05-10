@@ -4,9 +4,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function HistoryScreen() {
   const router = useRouter();
@@ -46,57 +49,67 @@ export default function HistoryScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* History List */}
-      <FlatList
-        data={history}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.historyItem}>
-            <Text style={styles.historyText}>
-              {getIcon(item.name)} {item.name}
-            </Text>
-            <TouchableOpacity
-              style={styles.moreButton}
-              onPress={() =>
-                router.push({
-                  pathname: "/details",
-                  params: { name: item.name, details: item.details },
-                })
-              }
-            >
-              <Text style={styles.moreButtonText}>More</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => deleteEntry(item.id)}
-            >
-              <Text style={styles.deleteButtonText}>Delete</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+    <View style={styles.outer}>
+      <View style={styles.container}>
+        {/* History List */}
+        <FlatList
+          data={history}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.historyItem}>
+              <Text style={styles.historyText}>
+                {getIcon(item.name)} {item.name}
+              </Text>
+              <TouchableOpacity
+                style={styles.moreButton}
+                onPress={() =>
+                  router.push({
+                    pathname: "/details",
+                    params: { name: item.name, details: item.details },
+                  })
+                }
+              >
+                <Text style={styles.moreButtonText}>More</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteEntry(item.id)}
+              >
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
 
-      {/* Clear All Button */}
-      <TouchableOpacity style={styles.clearButton} onPress={clearHistory}>
-        <Text style={styles.clearButtonText}>Clear All</Text>
-      </TouchableOpacity>
+        {/* Clear All Button */}
+        <TouchableOpacity style={styles.clearButton} onPress={clearHistory}>
+          <Text style={styles.clearButtonText}>Clear All</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  outer: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-    padding: 20,
+    width: SCREEN_WIDTH > 500 ? 500 : "96%",
+    maxWidth: 500,
+    padding: SCREEN_WIDTH > 400 ? 24 : 12,
+    paddingTop: 20,
   },
   historyItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    padding: 15,
+    paddingVertical: SCREEN_WIDTH > 400 ? 18 : 12,
+    paddingHorizontal: SCREEN_WIDTH > 400 ? 18 : 10,
     borderRadius: 10,
     marginBottom: 10,
     shadowColor: "#000",
@@ -106,39 +119,39 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   historyText: {
-    fontSize: 16,
+    fontSize: SCREEN_WIDTH > 400 ? 17 : 15,
     fontWeight: "600",
     color: "#333",
     flex: 1,
   },
   moreButton: {
-    backgroundColor: "#3498db", // Light blue color for the "More" button
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    backgroundColor: "#3498db",
+    paddingVertical: SCREEN_WIDTH > 400 ? 8 : 6,
+    paddingHorizontal: SCREEN_WIDTH > 400 ? 14 : 10,
     borderRadius: 20,
-    marginLeft: 10,
+    marginLeft: 8,
   },
   moreButtonText: {
     color: "#fff",
     fontWeight: "600",
-    fontSize: 14,
+    fontSize: SCREEN_WIDTH > 400 ? 15 : 13,
   },
   deleteButton: {
-    backgroundColor: "#3498db", // Same as cancel button
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    backgroundColor: "#3498db",
+    paddingVertical: SCREEN_WIDTH > 400 ? 8 : 6,
+    paddingHorizontal: SCREEN_WIDTH > 400 ? 14 : 10,
     borderRadius: 20,
-    marginLeft: 10,
+    marginLeft: 8,
   },
   deleteButtonText: {
-    color: "#FF3B30", // Red text for delete button
-    fontWeight: "800", // ExtraBold
-    fontFamily: "Outfit", // Font style
-    fontSize: 14,
+    color: "#FF3B30",
+    fontWeight: "800",
+    fontFamily: "Outfit",
+    fontSize: SCREEN_WIDTH > 400 ? 15 : 13,
   },
   clearButton: {
-    backgroundColor: "#3498db", // Light blue color for the "Clear All" button
-    paddingVertical: 15,
+    backgroundColor: "#3498db",
+    paddingVertical: SCREEN_WIDTH > 400 ? 16 : 12,
     borderRadius: 30,
     alignItems: "center",
     marginTop: 20,
@@ -146,6 +159,6 @@ const styles = StyleSheet.create({
   clearButtonText: {
     color: "#fff",
     fontWeight: "800",
-    fontSize: 16,
+    fontSize: SCREEN_WIDTH > 400 ? 17 : 15,
   },
 });

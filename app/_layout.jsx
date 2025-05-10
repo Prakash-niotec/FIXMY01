@@ -1,8 +1,26 @@
 import { Stack } from "expo-router";
+import { Text } from "react-native";
 
 export default function Layout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerBackTitleVisible: false,
+        headerBackImage: () => (
+          <Text
+            style={{
+              fontSize: 28,
+              color: "#2260FF",
+              marginLeft: 10,
+              fontWeight: "900",
+              fontFamily: "Outfit",
+            }}
+          >
+            {"<"}
+          </Text>
+        ),
+      }}
+    >
       {/* Index Screen */}
       <Stack.Screen name="index" options={{ headerShown: false }} />
 
