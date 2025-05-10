@@ -19,6 +19,20 @@ export default function Layout() {
           },
         }}
       />
+
+      {/* History Screen */}
+      <Stack.Screen
+        name="history"
+        options={{
+          title: "History", // Set the correct title
+          headerStyle: { backgroundColor: "#fff" },
+          headerTitleStyle: {
+            fontFamily: "Outfit", // Ensure the font is applied
+            fontWeight: "800", // ExtraBold
+            color: "#2260FF", // Title color
+          },
+        }}
+      />
     </Stack>
   );
 }
