@@ -10,12 +10,12 @@ export default function Layout() {
       <Stack.Screen
         name="edit-profile"
         options={{
-          title: "Edit Profile", // Set the correct title
+          title: "Edit Profile",
           headerStyle: { backgroundColor: "#fff" },
           headerTitleStyle: {
-            fontFamily: "Outfit", // Ensure the font is applied
-            fontWeight: "800", // ExtraBold
-            color: "#2260FF", // Title color
+            fontFamily: "Outfit",
+            fontWeight: "800",
+            color: "#2260FF",
           },
         }}
       />
@@ -24,12 +24,40 @@ export default function Layout() {
       <Stack.Screen
         name="history"
         options={{
-          title: "History", // Set the correct title
+          title: "History",
           headerStyle: { backgroundColor: "#fff" },
           headerTitleStyle: {
-            fontFamily: "Outfit", // Ensure the font is applied
-            fontWeight: "800", // ExtraBold
-            color: "#2260FF", // Title color
+            fontFamily: "Outfit",
+            fontWeight: "800",
+            color: "#2260FF",
+          },
+        }}
+      />
+
+      {/* Logout Screen */}
+      <Stack.Screen
+        name="logout"
+        options={{
+          title: "Logout",
+          headerStyle: { backgroundColor: "#fff" },
+          headerTitleStyle: {
+            fontFamily: "Outfit",
+            fontWeight: "800",
+            color: "#2260FF",
+          },
+        }}
+      />
+
+      {/* Details Screen */}
+      <Stack.Screen
+        name="details"
+        options={{
+          title: "History Detail",
+          headerStyle: { backgroundColor: "#fff" },
+          headerTitleStyle: {
+            fontFamily: "Outfit",
+            fontWeight: "800",
+            color: "#2260FF",
           },
         }}
       />

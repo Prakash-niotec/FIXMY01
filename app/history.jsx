@@ -11,9 +11,21 @@ import { useState } from "react";
 export default function HistoryScreen() {
   const router = useRouter();
   const [history, setHistory] = useState([
-    { id: "1", name: "ABC Fuel Station" },
-    { id: "2", name: "XYZ Garage" },
-    { id: "3", name: "RM Garage" },
+    {
+      id: "1",
+      name: "ABC Garage",
+      details: "Spark Plug Replacement | Rs. 1000/- | New Delhi",
+    },
+    {
+      id: "2",
+      name: "XYZ Fuel Station",
+      details: "Fuel Refill | Rs. 500/- | Mumbai",
+    },
+    {
+      id: "3",
+      name: "RM Garage",
+      details: "Oil Change | Rs. 800/- | Bangalore",
+    },
   ]);
 
   const clearHistory = () => {
@@ -26,6 +38,13 @@ export default function HistoryScreen() {
     console.log(`Entry ${id} deleted`);
   };
 
+  // Helper to get icon based on name
+  const getIcon = (name) => {
+    if (/fuel station/i.test(name)) return "⛽";
+    if (/garage/i.test(name)) return "🔧";
+    return "";
+  };
+
   return (
     <View style={styles.container}>
       {/* History List */}
@@ -34,11 +53,16 @@ export default function HistoryScreen() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
-            <Text style={styles.historyText}>{item.name}</Text>
+            <Text style={styles.historyText}>
+              {getIcon(item.name)} {item.name}
+            </Text>
             <TouchableOpacity
               style={styles.moreButton}
               onPress={() =>
-                router.push(`/details/${item.name.replace(/\s/g, "_")}`)
+                router.push({
+                  pathname: "/details",
+                  params: { name: item.name, details: item.details },
+                })
               }
             >
               <Text style={styles.moreButtonText}>More</Text>

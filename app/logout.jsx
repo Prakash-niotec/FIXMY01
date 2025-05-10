@@ -1,6 +1,44 @@
-import { Dimensions } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
-const { width } = Dimensions.get("window");
+export default function LogoutScreen() {
+  const router = useRouter();
+
+  return (
+    <View style={styles.overlay}>
+      <View style={styles.popupContainer}>
+        <Text style={styles.title}>Are you sure you want to logout?</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => {
+              try {
+                router.back();
+              } catch (error) {
+                console.error("Error navigating back:", error);
+              }
+            }}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={() => {
+              try {
+                router.replace("/");
+              } catch (error) {
+                console.error("Error navigating to home:", error);
+              }
+            }}
+          >
+            <Text style={styles.logoutButtonText}>Yes, Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   overlay: {
@@ -19,8 +57,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
-    width: width * 0.9, // 90% of the screen width
-    alignSelf: "center", // Center the popup horizontally
   },
   title: {
     fontSize: 18,
