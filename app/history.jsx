@@ -137,14 +137,14 @@ const styles = StyleSheet.create({
     fontSize: SCREEN_WIDTH > 400 ? 15 : 13,
   },
   deleteButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#3498db", // Same as moreButton
     paddingVertical: SCREEN_WIDTH > 400 ? 8 : 6,
     paddingHorizontal: SCREEN_WIDTH > 400 ? 14 : 10,
     borderRadius: 20,
     marginLeft: 8,
   },
   deleteButtonText: {
-    color: "#FF3B30",
+    color: "#fff", // Changed to white to match moreButton
     fontWeight: "800",
     fontFamily: "Outfit",
     fontSize: SCREEN_WIDTH > 400 ? 15 : 13,

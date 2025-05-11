@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   cancelButton: {
     flex: 1,
     marginRight: 10,
-    backgroundColor: "#007BFF",
+    backgroundColor: "#3498db", // Changed to #3498db
     paddingVertical: SCREEN_WIDTH > 400 ? 14 : 10,
     borderRadius: 30,
     alignItems: "center",
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
   logoutButton: {
     flex: 1,
     marginLeft: 10,
-    backgroundColor: "#FF3B30",
+    backgroundColor: "#3498db", // Changed to #3498db
     paddingVertical: SCREEN_WIDTH > 400 ? 14 : 10,
     borderRadius: 30,
     alignItems: "center",
   },
   logoutButtonText: {
-    color: "#fff",
+    color: "#fff", // White text
     fontSize: SCREEN_WIDTH > 400 ? 17 : 15,
     fontWeight: "800",
     fontFamily: "Outfit",

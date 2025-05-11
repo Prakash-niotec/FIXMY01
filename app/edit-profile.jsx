@@ -268,9 +268,7 @@ export default function EditProfileScreen() {
               style={styles.cancelButton}
               onPress={() => router.back()}
             >
-              <Text style={[styles.buttonText, { color: "#F36B6E" }]}>
-                Cancel
-              </Text>
+              <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -392,7 +390,7 @@ const styles = StyleSheet.create({
   saveButton: {
     flex: 1,
     marginRight: 8,
-    backgroundColor: "#007BFF",
+    backgroundColor: "#3498db", // Updated color
     paddingVertical: 12,
     borderRadius: 20,
     alignItems: "center",
@@ -400,14 +398,13 @@ const styles = StyleSheet.create({
   cancelButton: {
     flex: 1,
     marginLeft: 8,
-    backgroundColor: "#007BFF",
+    backgroundColor: "#3498db", // Updated color
     paddingVertical: 12,
     borderRadius: 20,
     alignItems: "center",
-    color: "#FF3B30",
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: "#fff", // White text
     fontSize: 16,
     fontWeight: "800",
     fontFamily: "Outfit",
